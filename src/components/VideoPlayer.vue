@@ -22,13 +22,9 @@ export default {
     };
   },
   mounted() {
-    this.player = videojs(
-      this.$refs.video,
-      this.options,
-      function onPlayerReady() {
-        console.log('ready', this);
-      }
-    );
+    this.player = videojs(this.$refs.video, this.options, function onPlayerReady() {
+      console.log('ready', this);
+    });
   },
   beforeDestroy() {
     if (this.player) this.player.dispose();

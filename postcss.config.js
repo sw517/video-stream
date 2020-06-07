@@ -1,3 +1,4 @@
+// Additional CSS Plugins for Vue
 const autoprefixer = require('autoprefixer');
 const tailwindcss = require('tailwindcss');
 
