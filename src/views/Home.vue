@@ -2,7 +2,6 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <VideoStream
-      v-if="videoList.length > 0"
       :options="{
         sources: [{ src: this.videoList[0].video, type: 'video/mp4' }],
         controls: true,
@@ -12,30 +11,31 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import VideoStream from '@/components/VideoStream.vue';
+// Helpers
 import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
+// Components
+import VideoStream from '@/components/VideoStream.vue';
 
 export default {
   name: 'Home',
   components: {
     VideoStream,
   },
-  data() {
-    return {
-      videoList: [],
-    };
+  computed: {
+    ...mapGetters(['videoList']),
   },
-  mounted() {
+  created() {
     this.fetchVideos();
   },
   methods: {
+    ...mapActions(['setVideoList']),
     fetchVideos() {
       axios
         .get('http://hybridtv.ss7.tv/techtest/movies.json')
         .then(response => {
           console.log(response);
-          this.videoList = response.data.data;
+          this.setVideoList(response.data.data);
         });
     },
   },
