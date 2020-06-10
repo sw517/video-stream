@@ -1,12 +1,41 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Home</router-link>
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import axios from 'axios';
+
+export default {
+  name: 'App',
+  computed: {
+    ...mapGetters('video', ['videoList']),
+  },
+  created() {
+    if (!this.videoList.length) this.fetchVideos();
+  },
+  mounted() {
+    this.setWindowWidth(document.documentElement.clientWidth);
+    window.addEventListener('resize', () => {
+      this.setWindowWidth(document.documentElement.clientWidth);
+    });
+  },
+  methods: {
+    ...mapActions('generalConfig', ['setWindowWidth']),
+    ...mapActions('video', ['setVideoList']),
+    fetchVideos() {
+      axios.get('http://hybridtv.ss7.tv/techtest/movies.json').then(response => {
+        this.setVideoList(response.data.data);
+      });
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -15,6 +44,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  @apply mb-12;
 }
 
 #nav {
@@ -28,5 +58,22 @@
       color: #42b983;
     }
   }
+}
+
+.container {
+  @apply mx-auto px-4;
+
+  // Override media-query max-width
+  &.container {
+    @apply max-w-screen-lg;
+  }
+}
+
+.row {
+  @apply -mx-4;
+}
+
+.column {
+  @apply px-4;
 }
 </style>
