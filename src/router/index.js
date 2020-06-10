@@ -11,13 +11,12 @@ const routes = [
     component: Home,
   },
   {
-    path: '/video',
-    name: 'Video',
+    path: '/watch/:title',
+    name: 'Watch',
     // route level code-splitting
-    // this generates a separate chunk (video.[hash].js) for this route
+    // this generates a separate chunk (watch.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "video" */ '../views/Video.vue'),
+    component: () => import(/* webpackChunkName: "watch" */ '../views/Watch.vue'),
   },
 ];
 
