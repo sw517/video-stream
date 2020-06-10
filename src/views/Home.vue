@@ -1,51 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <VideoPlayer
-      :options="{
-        sources: [{ src: videoList[0].video, type: 'video/mp4' }],
-        controls: true,
-      }"
-    />
-    <VideoThumbnail
-      v-for="(video, index) in videoList"
-      :key="index"
-      :title="video.title"
-      :image="video.poster"
-    />
-  </div>
+  <main class="home">
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="column">
+            <ThumbnailCarousel>
+              <template v-for="(video, index) in videoList" v-slot:[index]>
+                <VideoThumbnail :key="index" :title="video.title" :image="video.poster" />
+              </template>
+            </ThumbnailCarousel>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </template>
 
 <script>
 // Helpers
-import axios from 'axios';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 // Components
-import VideoPlayer from '@/components/VideoPlayer.vue';
 import VideoThumbnail from '@/components/VideoThumbnail.vue';
+import ThumbnailCarousel from '@/components/ThumbnailCarousel.vue';
 
 export default {
   name: 'Home',
   components: {
-    VideoPlayer,
     VideoThumbnail,
+    ThumbnailCarousel,
   },
   computed: {
-    ...mapGetters(['videoList']),
-  },
-  created() {
-    this.fetchVideos();
-  },
-  methods: {
-    ...mapActions(['setVideoList']),
-    fetchVideos() {
-      axios
-        .get('http://hybridtv.ss7.tv/techtest/movies.json')
-        .then(response => {
-          console.log(response);
-          this.setVideoList(response.data.data);
-        });
-    },
+    ...mapGetters('video', ['videoList']),
+    ...mapGetters('generalConfig', ['currentBreakpoint']),
   },
 };
 </script>
