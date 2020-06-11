@@ -4,12 +4,14 @@
       <button
         class="thumbnail-carousel__controls__btn thumbnail-carousel__controls__btn--prev"
         @click="handlePagination(currentSlide - 1)"
+        :class="{ 'thumbnail-carousel__controls__btn--disabled': currentSlide === 1 }"
       >
         &lt;
       </button>
       <button
         class="thumbnail-carousel__controls__btn thumbnail-carousel__controls__btn--next"
         @click="handlePagination(currentSlide + 1)"
+        :class="{ 'thumbnail-carousel__controls__btn--disabled': cCarouselIsAtEnd }"
       >
         &gt;
       </button>
@@ -297,15 +299,22 @@ export default {
   width: 50px;
   height: 50px;
 
-  &:hover {
-    box-shadow: 0 0 0 2px #ffd700;
-    border-radius: 5px;
+  @media screen and (pointer: fine) {
+    &:hover:not(.thumbnail-carousel__controls__btn--disabled) {
+      box-shadow: 0 0 0 2px #ffd700;
+      border-radius: 5px;
+    }
   }
 }
 
 .thumbnail-carousel__controls__btn--next {
   left: auto;
   right: 15px;
+}
+
+.thumbnail-carousel__controls__btn--disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .thumbnail-carousel__cycle {
