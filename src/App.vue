@@ -29,7 +29,11 @@ export default {
     ...mapActions('generalConfig', ['setWindowWidth']),
     ...mapActions('video', ['setVideoList']),
     fetchVideos() {
-      axios.get('http://hybridtv.ss7.tv/techtest/movies.json').then(response => {
+      axios({
+        method: 'GET',
+        url: 'http://hybridtv.ss7.tv/techtest/movies.json',
+        crossDomain: true,
+      }).then(response => {
         this.setVideoList(response.data.data);
       });
     },
